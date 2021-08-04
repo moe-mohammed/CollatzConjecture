@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Collatz Conjecture</title>
+    <style>
+    </style>
+    <!-- Load plotly.js into the DOM 
+	<script src='https://cdn.plot.ly/plotly-2.3.0.min.js'></script>
+-->
+</head>
+
+<body>
+
+    <h2>Enter any number to see Collatz Conjecture at work!</h2>
+    <input id="numberInput">
+    <input type="submit" value="Enter" onclick="return plot();">
+    <br />
+    <a href="https://en.wikipedia.org/wiki/Collatz_conjecture">Collatz Conjecture Wiki</a>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <script>
+        function plot() {
+            var numInput = document.getElementById("numberInput").value;
+            if (!numInput && isNan(numInput)) {
+                alert("Enter numbers only");
+                return;
+            }
+
+            var datapoints = [];
+            datapoints.push({
+                y: parseInt(numInput)
+            });
+            while (numInput != 1) {
+                if (numInput % 2 == 0) {
+                    numInput = numInput / 2;
+                } else {
+                    numInput = numInput * 3 + 1;
+                }
+
+                datapoints.push({
+                    y: numInput
+                });
+            }
+
+            /*var trace = {
+              x: nums,
+              type: "histogram",
+              nbinsx: 50
+            };
+            var data = [trace];
+            Plotly.newPlot("myDiv", data);
+            */
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "Simple Line Chart"
+                },
+                data: [{
+                    type: "line",
+                    indexLabelFontSize: 16,
+                    dataPoints: datapoints
+                }]
+            });
+            chart.render();
+        }
+    </script>
+</body>
+
+</html>
